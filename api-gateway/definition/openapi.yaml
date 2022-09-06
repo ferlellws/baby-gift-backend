@@ -8,11 +8,11 @@ paths:
   /test-function:
     get:
       x-amazon-apigateway-integration:
-        type: aws_proxy
         credentials:
           Fn::GetAtt:
             - ApiGwExecutionRole
             - Arn
+        type: aws_proxy
         httpMethod: POST
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PruebaFunction}/invocations

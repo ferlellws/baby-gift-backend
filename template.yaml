@@ -28,5 +28,8 @@ Resources:
     Properties:
       Location: api-gateway/template.yaml
       Parameters:
+        # COGNITO ARN
+        CognitoUserPool: !GetAtt Cognito.Outputs.UserPoolARN
+        # TEST FUNCTION
         PruebaFunction: !GetAtt SettingsModule.Outputs.PruebaFunction
     DependsOn: Cognito
