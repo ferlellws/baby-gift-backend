@@ -5,7 +5,9 @@
   "httpMethod": "POST",
   "isBase64Encoded": true,
   "queryStringParameters": {
-    "tenant": "tenant-1"
+    "tenant": "tenant-13",
+    "environment": "dev",
+    "email": "tenant-11@tecno.co"
   },
   "pathParameters": {
     "proxy": "/path/to/resource"

@@ -1,29 +1,20 @@
 openapi: 3.0.1
 info:
-  title: transport-app-admin
+  title: babygift-admin
   version: '1.0'
 servers:
   - url: /Prod
 paths:
-  /tenants/new:
-    post:
-      summary: Crea a un tenant
-      description: "Con este endpoint se crea un tenant"
-      responses:
-        "200":
-          description: Tenant creado exitosamente
-        "400":
-          description: Bad reqeust
-        "500":
-          description: Server Error
+  /test-function:
+    get:
       x-amazon-apigateway-integration:
-        type: aws
+        type: aws_proxy
         credentials:
           Fn::GetAtt:
             - ApiGwExecutionRole
             - Arn
         httpMethod: POST
         uri:
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateTenant}/invocations
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PruebaFunction}/invocations
         passthroughBehavior: when_no_match
 components: {}

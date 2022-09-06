@@ -2,11 +2,11 @@ version = 0.1
 [default]
 [default.deploy]
 [default.deploy.parameters]
-stack_name = "base-app"
-s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-jq1nr4tbelwj"
-s3_prefix = "base-app"
+stack_name = "babygift-app"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1dh7ywbn8gsfr"
+s3_prefix = "babygift-app"
 region = "us-east-1"
-profile = "transportApp"
+profile = "cp"
 confirm_changeset = true
 capabilities = "CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM CAPABILITY_IAM"
 image_repositories = []

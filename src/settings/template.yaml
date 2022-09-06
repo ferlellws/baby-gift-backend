@@ -11,13 +11,13 @@ Globals:
     Runtime: nodejs16.x
 
 Resources:
-  TenantModule:
+  PruebaModule:
     Type: AWS::Serverless::Application
     Properties:
-      Location: ./tenants/template.yaml
+      Location: ./prueba/template.yaml
 
 
 Outputs:
-  CreateTenant:
+  PruebaFunction:
     Description: "CreateTenant Lambda Function ARN"
-    Value: !GetAtt TenantModule.Outputs.CreateTenant
+    Value: !GetAtt PruebaModule.Outputs.PruebaFunction

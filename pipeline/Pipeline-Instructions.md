@@ -1,4 +1,4 @@
-# transport-app-pipeline
+# baby-gift-pipeline
 
 **This is an example of how to create a minimal pipeline for SAM based Serverless Apps**
 
@@ -18,25 +18,25 @@ Replace the placeholders with values corresponding to your GitHub Repo and Token
 
 ```bash
 aws ssm put-parameter \
-    --name "/service/transport-app-pipeline/github/repo" \
-    --description "Github Repository name for Cloudformation Stack transport-app-pipeline-pipeline" \
+    --name "/service/baby-gift-pipeline/github/repo" \
+    --description "Github Repository name for Cloudformation Stack baby-gift-pipeline-pipeline" \
     --type "String" \
     --value "GITHUB_REPO_NAME"
 
 aws ssm put-parameter \
-    --name "/service/transport-app-pipeline/github/token" \
-    --description "Github Token for Cloudformation Stack transport-app-pipeline-pipeline" \
+    --name "/service/baby-gift-pipeline/github/token" \
+    --description "Github Token for Cloudformation Stack baby-gift-pipeline-pipeline" \
     --type "String" \
     --value "TOKEN"
 
 aws ssm put-parameter \
-    --name "/service/transport-app-pipeline/github/user" \
-    --description "Github Username for Cloudformation Stack transport-app-pipeline-pipeline" \
+    --name "/service/baby-gift-pipeline/github/user" \
+    --description "Github Username for Cloudformation Stack baby-gift-pipeline-pipeline" \
     --type "String" \
     --value "GITHUB_USER"
 ```
 
-**NOTE:** Keep in mind that these Parameters will only be available within the same region you're deploying this Pipeline stack. Also, if these values ever change you will need to [update these parameters](https://docs.aws.amazon.com/cli/latest/reference/ssm/put-parameter.html) as well as update the "transport-app-pipeline-pipeline" Cloudformation stack.
+**NOTE:** Keep in mind that these Parameters will only be available within the same region you're deploying this Pipeline stack. Also, if these values ever change you will need to [update these parameters](https://docs.aws.amazon.com/cli/latest/reference/ssm/put-parameter.html) as well as update the "baby-gift-pipeline-pipeline" Cloudformation stack.
 
 ## Pipeline creation
 
@@ -90,7 +90,7 @@ Run the following AWS CLI command to create your first pipeline for your SAM bas
 
 ```bash
 aws cloudformation create-stack \
-    --stack-name transport-app-pipeline-pipeline \
+    --stack-name baby-gift-pipeline-pipeline \
     --template-body file://pipeline.yaml \
     --capabilities CAPABILITY_NAMED_IAM
 ```
@@ -99,7 +99,7 @@ This may take a couple of minutes to complete, therefore give it a minute or two
 
 ```bash
 aws cloudformation describe-stacks \
-    --stack-name transport-app-pipeline-pipeline \
+    --stack-name baby-gift-pipeline-pipeline \
     --query 'Stacks[].Outputs'
 ```
 

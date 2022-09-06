@@ -18,18 +18,18 @@ Parameters:
     GithubRepo:
       Description: Gitub nombre del repositorio
       Type: AWS::SSM::Parameter::Value<String>
-      Default: /service/transport-app-admin-pipeline/github/repo
+      Default: /service/baby-gift-pipeline/github/repo
 
     GithubToken:
       Description: Github OAuth Token con permisos completos en admin:repo_hook y repositorio
       Type: AWS::SSM::Parameter::Value<String>
       NoEcho: true
-      Default: /service/transport-app-pipeline/github/token
+      Default: /service/baby-gift-pipeline/github/token
 
     GithubUser:
       Description: Github user donde vive el repositorio
       Type: AWS::SSM::Parameter::Value<String>
-      Default: /service/transport-app-pipeline/github/user
+      Default: /service/baby-gift-pipeline/github/user
 
 
 Resources:
@@ -56,7 +56,7 @@ Resources:
               Value: !Ref AWS::StackName
             -
               Key: "Project"
-              Value: transport-app-pipeline
+              Value: baby-gift-pipeline
         DeletionPolicy: Retain
         UpdateReplacePolicy: Retain
 
@@ -71,8 +71,8 @@ Resources:
     CodeBuildProject:
         Type: AWS::CodeBuild::Project
         Properties:
-            Name: transport-app-admin-pipeline
-            Description: Build project for the transport-app-admin-pipeline
+            Name: baby-gift-pipeline
+            Description: Build project for the baby-gift-pipeline
             Artifacts:
               Type: CODEPIPELINE
             Environment: 
@@ -95,7 +95,7 @@ Resources:
                 Value: !Ref AWS::StackName
               -
                 Key: "Project"
-                Value: transport-app-admin-pipeline
+                Value: baby-gift-pipeline
 
 ########  #### ########  ######## ##       #### ##    ## ######## 
 ##     ##  ##  ##     ## ##       ##        ##  ###   ## ##       
@@ -111,7 +111,7 @@ Resources:
             ArtifactStore: 
                 Location: !Ref BuildArtifactsBucket
                 Type: S3
-            Name: transport-app-admin-pipeline
+            Name: baby-gift-pipeline
             RoleArn: !GetAtt CodePipelineExecutionRole.Arn
             Stages:
                 - Name: Source
@@ -157,8 +157,8 @@ Resources:
                       # More info on Possible Values for Cloudformation: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/continuous-delivery-codepipeline-action-reference.html#w2ab2c13c13b9
                         ActionMode: CHANGE_SET_REPLACE
                         RoleArn: !GetAtt CloudFormationExecutionRole.Arn
-                        StackName: transport-app-admin-pipeline-Develop
-                        ChangeSetName: transport-app-admin-pipeline-ChangeSet-Develop
+                        StackName: baby-gift-pipeline-Develop
+                        ChangeSetName: baby-gift-pipeline-ChangeSet-Develop
                         TemplatePath: BuildArtifactAsZip::packaged.yaml
                         Capabilities: 'CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND'
                       InputArtifacts:
@@ -173,10 +173,10 @@ Resources:
                       Configuration:
                         ActionMode: CHANGE_SET_EXECUTE
                         RoleArn: !GetAtt CloudFormationExecutionRole.Arn
-                        StackName: transport-app-admin-pipeline-Develop
-                        ChangeSetName: transport-app-admin-pipeline-ChangeSet-Develop
+                        StackName: baby-gift-pipeline-Develop
+                        ChangeSetName: baby-gift-pipeline-ChangeSet-Develop
                       OutputArtifacts:
-                        - Name: transport-app-admin-pipelineDevelopChangeSet
+                        - Name: baby-gift-pipelineDevelopChangeSet
                       RunOrder: 2
                 - Name: Staging
                   Actions:
@@ -196,8 +196,8 @@ Resources:
                       Configuration:
                         ActionMode: CHANGE_SET_REPLACE
                         RoleArn: !GetAtt CloudFormationExecutionRole.Arn
-                        StackName: transport-app-admin-pipeline-Staging
-                        ChangeSetName: transport-app-admin-pipeline-ChangeSet-Staging
+                        StackName: baby-gift-pipeline-Staging
+                        ChangeSetName: baby-gift-pipeline-ChangeSet-Staging
                         TemplatePath: BuildArtifactAsZip::packaged.yaml
                         Capabilities: 'CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND'
                       InputArtifacts:
@@ -212,10 +212,10 @@ Resources:
                       Configuration:
                         ActionMode: CHANGE_SET_EXECUTE
                         RoleArn: !GetAtt CloudFormationExecutionRole.Arn
-                        StackName: transport-app-admin-pipeline-Staging
-                        ChangeSetName: transport-app-admin-pipeline-ChangeSet-Staging
+                        StackName: baby-gift-pipeline-Staging
+                        ChangeSetName: baby-gift-pipeline-ChangeSet-Staging
                       OutputArtifacts:
-                        - Name: transport-app-admin-pipelineStagingChangeSet
+                        - Name: baby-gift-pipelineStagingChangeSet
                       RunOrder: 3
                 - Name: Prod
                   Actions:
@@ -235,8 +235,8 @@ Resources:
                       Configuration:
                         ActionMode: CHANGE_SET_REPLACE
                         RoleArn: !GetAtt CloudFormationExecutionRole.Arn
-                        StackName: transport-app-admin-pipeline-Prod
-                        ChangeSetName: transport-app-admin-pipeline-ChangeSet-Prod
+                        StackName: baby-gift-pipeline-Prod
+                        ChangeSetName: baby-gift-pipeline-ChangeSet-Prod
                         TemplatePath: BuildArtifactAsZip::packaged.yaml
                         Capabilities: 'CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND'
                       InputArtifacts:
@@ -251,10 +251,10 @@ Resources:
                       Configuration:
                         ActionMode: CHANGE_SET_EXECUTE
                         RoleArn: !GetAtt CloudFormationExecutionRole.Arn
-                        StackName: transport-app-admin-pipeline-Prod
-                        ChangeSetName: transport-app-admin-pipeline-ChangeSet-Prod
+                        StackName: baby-gift-pipeline-Prod
+                        ChangeSetName: baby-gift-pipeline-ChangeSet-Prod
                       OutputArtifacts:
-                        - Name: transport-app-admin-pipelineProdChangeSet
+                        - Name: baby-gift-pipelineProdChangeSet
                       RunOrder: 3
 
 
@@ -291,8 +291,8 @@ Resources:
                           - 'logs:CreateLogStream'
                           - 'logs:PutLogEvents'
                         Resource:
-                          - !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/transport-app-admin-pipeline'
-                          - !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/transport-app-admin-pipeline:*'
+                          - !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/baby-gift-pipeline'
+                          - !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/baby-gift-pipeline:*'
                 - PolicyName: CodeBuildArtifactsBucket
                   PolicyDocument:
                     Version: '2012-10-17'
@@ -391,7 +391,7 @@ Resources:
                           - 'cloudformation:SetStackPolicy'
                           - 'cloudformation:ValidateTemplate'
                         Resource: 
-                          - !Sub 'arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/transport-app-admin-pipeline*/*'
+                          - !Sub 'arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/baby-gift-pipeline*/*'
                           - !Sub 'arn:aws:cloudformation:${AWS::Region}:aws:transform/Serverless-2016-10-31'
 
 

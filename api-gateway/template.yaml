@@ -6,16 +6,16 @@ Description: >
   Root stack for managing orders-app resources
 
 Parameters:
-  CreateTenant:
+  PruebaFunction:
     Type: String
-    Description: CreateTenant Function ARN
+    Description: PruebaFunction Function ARN
 
 
 Resources:
   TransportAppAdminApi:
     Type: AWS::Serverless::Api
     Properties:
-      Name: !Sub ${AWS::StackName}-admin-api-gateway
+      Name: !Sub ${AWS::StackName}-api-gateway
       StageName: Prod
 #      MethodSettings:
 #        - HttpMethod: "*"
@@ -57,7 +57,7 @@ Resources:
               - Action: lambda:*
                 Effect: Allow
                 Resource:
-                  - Ref: CreateTenant
+                  - Ref: PruebaFunction
 
 Outputs:
   TransportAppApiEndpoint:

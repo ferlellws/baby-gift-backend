@@ -11,36 +11,36 @@ Globals:
     Runtime: nodejs16.x
 
 Resources:
-  CreateTenant:
+  PruebaFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ./
-      Handler: create-tenant.lambdaHandler
+      Handler: prueba.lambdaHandler
       # Layers:
       #   - !Ref libs
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref TenantsTable
+            TableName: !Ref PruebaTable
       Environment:
         Variables:
-          TENANTS_TABLE: !Ref TenantsTable
+          PRUEBA_TABLE: !Ref PruebaTable
 
 
-  TenantsTable:
+  PruebaTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: "TenantsTable"
+      TableName: "PruebaTable"
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
-        - AttributeName: "tenant"
+        - AttributeName: "id"
           AttributeType: "S"
       KeySchema:
         -
-          AttributeName: "tenant"
+          AttributeName: "id"
           KeyType: "HASH"
 
 
 Outputs:
-  CreateTenant:
-    Description: "CreateTenant Lambda Function ARN"
-    Value: !GetAtt CreateTenant.Arn
+  PruebaFunction:
+    Description: "PruebaFunction Lambda Function ARN"
+    Value: !GetAtt PruebaFunction.Arn
