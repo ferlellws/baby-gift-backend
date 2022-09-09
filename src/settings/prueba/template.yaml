@@ -16,8 +16,6 @@ Resources:
     Properties:
       CodeUri: ./
       Handler: prueba.lambdaHandler
-      # Layers:
-      #   - !Ref libs
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref PruebaTable
