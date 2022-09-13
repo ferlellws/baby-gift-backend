@@ -8,26 +8,26 @@ Description: >
 Globals:
   Function:
     Timeout: 5
-    Runtime: nodejs16.x
+    Runtime: python3.9
 
 Resources:
   GetCategories:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ./
-      Handler: get-categories.lambdaHandler
+      Handler: get-categories.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Categories
       Environment:
         Variables:
-          PRUEBA_TABLE: !Ref Categories
+          CATEGORIES_TABLE: !Ref Categories
 
 
   Categories:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub "${AWS::StackName}-Categories"
+      TableName: !Sub "BabyGift-Categories"
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
         - AttributeName: "id"
