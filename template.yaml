@@ -17,10 +17,10 @@ Resources:
     Properties:
       Location: ./cognito/template.yaml
 
-  SettingsModule:
+  ProductsModule:
     Type: AWS::Serverless::Application
     Properties:
-      Location: ./src/settings/template.yaml
+      Location: ./src/products/template.yaml
     DependsOn: Cognito
 
   Api:
@@ -31,5 +31,5 @@ Resources:
         # COGNITO ARN
         CognitoUserPool: !GetAtt Cognito.Outputs.UserPoolARN
         # TEST FUNCTION
-        PruebaFunction: !GetAtt SettingsModule.Outputs.PruebaFunction
+        GetCategoriesFunction: !GetAtt ProductsModule.Outputs.GetCategoriesFunction
     DependsOn: Cognito

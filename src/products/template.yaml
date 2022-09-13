@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  EndPoint Masters
+
+  En este template se crean todos los maestros de tenant de la aplicación de transportes
+
+Globals:
+  Function:
+    Timeout: 5
+    Runtime: nodejs16.x
+
+Resources:
+  CategoriesModule:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: ./categories/template.yaml
+
+
+Outputs:
+  GetCategoriesFunction:
+    Description: "GetCategories Lambda Function ARN"
+    Value: !GetAtt CategoriesModule.Outputs.GetCategoriesFunction

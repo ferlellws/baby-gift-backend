@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  EndPoint Masters
+
+  En este template se crean todos los maestros de la aplicación de transportes
+
+Globals:
+  Function:
+    Timeout: 5
+    Runtime: nodejs16.x
+
+Resources:
+  GetCategories:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: get-categories.lambdaHandler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Categories
+      Environment:
+        Variables:
+          PRUEBA_TABLE: !Ref Categories
+
+
+  Categories:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-Categories"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "S"
+      KeySchema:
+        -
+          AttributeName: "id"
+          KeyType: "HASH"
+
+
+Outputs:
+  GetCategories:
+    Description: "GetCategories Lambda Function ARN"
+    Value: !GetAtt GetCategories.Arn

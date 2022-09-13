@@ -6,9 +6,9 @@ Description: >
   Root stack for managing orders-app resources
 
 Parameters:
-  PruebaFunction:
+  GetCategories:
     Type: String
-    Description: PruebaFunction Function ARN
+    Description: GetCategories Function ARN
 
   CognitoUserPool:
     Type: String
@@ -66,7 +66,7 @@ Resources:
               - Action: lambda:*
                 Effect: Allow
                 Resource:
-                  - Ref: PruebaFunction
+                  - Ref: GetCategories
 
 Outputs:
   TransportAppApiEndpoint:
