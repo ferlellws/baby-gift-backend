@@ -64,7 +64,7 @@ Resources:
   Categories:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: "BabyGift-Categories"
+      TableName: !Sub "${AWS::StackName}-BabyGift-Categories"
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
         - AttributeName: "Id"
