@@ -13,7 +13,7 @@ import uuid
 
 def lambda_handler(event, context):
     dynamo_table_name = os.environ.get('CATEGORIES_TABLE')
-    
+
     dynamo_table = get_dynamo_table(dynamo_table_name)
 
     response = dynamo_table.put_item(Item={
@@ -27,7 +27,7 @@ def lambda_handler(event, context):
     headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': "Content-Type",
-        'Access-Control-Allow-Methods': "OPTIONS,POST,GET"
+        'Access-Control-Allow-Methods': "OPTIONS,POST"
     }
     # response = dynamo_table
 
