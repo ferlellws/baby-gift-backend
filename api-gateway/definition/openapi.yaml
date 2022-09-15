@@ -5,7 +5,7 @@ info:
 servers:
   - url: /Prod
 paths:
-  /test-function:
+  /categories:
     get:
       x-amazon-apigateway-integration:
         credentials:
@@ -16,5 +16,51 @@ paths:
         httpMethod: POST
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCategories}/invocations
+        passthroughBehavior: when_no_match
+  /categories/{id+}:
+    get:
+      x-amazon-apigateway-integration:
+        credentials:
+          Fn::GetAtt:
+            - ApiGwExecutionRole
+            - Arn
+        type: aws_proxy
+        httpMethod: POST
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ReadCategory}/invocations
+        passthroughBehavior: when_no_match
+    put:
+      x-amazon-apigateway-integration:
+        credentials:
+          Fn::GetAtt:
+            - ApiGwExecutionRole
+            - Arn
+        type: aws_proxy
+        httpMethod: POST
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${UpdateCategory}/invocations
+        passthroughBehavior: when_no_match
+    delete:
+      x-amazon-apigateway-integration:
+        credentials:
+          Fn::GetAtt:
+            - ApiGwExecutionRole
+            - Arn
+        type: aws_proxy
+        httpMethod: POST
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteCategory}/invocations
+        passthroughBehavior: when_no_match
+  /categories/new:
+    post:
+      x-amazon-apigateway-integration:
+        credentials:
+          Fn::GetAtt:
+            - ApiGwExecutionRole
+            - Arn
+        type: aws_proxy
+        httpMethod: POST
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateCategory}/invocations
         passthroughBehavior: when_no_match
 components: {}

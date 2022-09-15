@@ -18,6 +18,18 @@ Resources:
 
 
 Outputs:
-  GetCategoriesFunction:
-    Description: "GetCategories Lambda Function ARN"
-    Value: !GetAtt CategoriesModule.Outputs.GetCategoriesFunction
+  GetCategories:
+    Description: "GetCategories Lambda  ARN"
+    Value: !GetAtt CategoriesModule.Outputs.GetCategories
+  CreateCategory:
+    Description: "CreateCategory Lambda  ARN"
+    Value: !GetAtt CategoriesModule.Outputs.CreateCategory
+  ReadCategory:
+    Description: "ReadCategory Lambda  ARN"
+    Value: !GetAtt CategoriesModule.Outputs.ReadCategory
+  UpdateCategory:
+    Description: "UpdateCategory Lambda  ARN"
+    Value: !GetAtt CategoriesModule.Outputs.UpdateCategory
+  DeleteCategory:
+    Description: "DeleteCategory Lambda  ARN"
+    Value: !GetAtt CategoriesModule.Outputs.DeleteCategory

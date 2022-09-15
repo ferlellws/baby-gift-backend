@@ -30,6 +30,10 @@ Resources:
       Parameters:
         # COGNITO ARN
         CognitoUserPool: !GetAtt Cognito.Outputs.UserPoolARN
-        # TEST FUNCTION
-        GetCategoriesFunction: !GetAtt ProductsModule.Outputs.GetCategoriesFunction
+        # CATEGORIES FUNCTIONS
+        GetCategories: !GetAtt ProductsModule.Outputs.GetCategories
+        CreateCategory: !GetAtt ProductsModule.Outputs.CreateCategory
+        ReadCategory: !GetAtt ProductsModule.Outputs.ReadCategory
+        UpdateCategory: !GetAtt ProductsModule.Outputs.UpdateCategory
+        DeleteCategory: !GetAtt ProductsModule.Outputs.DeleteCategory
     DependsOn: Cognito

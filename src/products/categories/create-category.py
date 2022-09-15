@@ -7,6 +7,7 @@ import logging
 import json
 import jwt
 import os
+import uuid
 
 # client = boto3.client('ssm')
 
@@ -15,12 +16,13 @@ def lambda_handler(event, context):
     
     dynamo_table = get_dynamo_table(dynamo_table_name)
 
-    # print(dynamo_table)
-    # response = dynamo_table.query(
-    #     KeyConditionExpression="Id > 0"
-    # )
-
-    response = dynamo_table.scan()
+    response = dynamo_table.put_item(Item={
+        'Id': uuid.uuid4().hex,
+        'Name': 'Bebes'
+        'Description': 'Productos de solo bebé',
+        'ParentId': '',
+        'Active': True
+    })
 
     headers = {
         'Access-Control-Allow-Origin': '*',
@@ -33,7 +35,7 @@ def lambda_handler(event, context):
         "headers": headers,
         "statusCode": 200,
         'body': json.dumps(
-            response['Items'],
+            response,
             indent=4,
             sort_keys=False,
             default=str

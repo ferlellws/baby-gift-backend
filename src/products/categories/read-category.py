@@ -20,7 +20,7 @@ def lambda_handler(event, context):
     #     KeyConditionExpression="Id > 0"
     # )
 
-    response = dynamo_table.scan()
+    response = dynamo_table.get_item(Key={"Id": "a7aaba4cd4684a1eb764d524cd55bd11"})
 
     headers = {
         'Access-Control-Allow-Origin': '*',

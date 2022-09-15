@@ -7,6 +7,7 @@ import logging
 import json
 import jwt
 import os
+import uuid
 
 # client = boto3.client('ssm')
 
@@ -15,17 +16,27 @@ def lambda_handler(event, context):
     
     dynamo_table = get_dynamo_table(dynamo_table_name)
 
-    # print(dynamo_table)
-    # response = dynamo_table.query(
-    #     KeyConditionExpression="Id > 0"
-    # )
-
-    response = dynamo_table.scan()
+    response = dynamo_table.update_item(
+        Key={"Id": "a7aaba4cd4684a1eb764d524cd55bd11"},
+        # Expression attribute names specify placeholders for attribute names to use in your update expressions.
+        ExpressionAttributeNames={
+            "#category": "Category",
+            "#description": "Description",
+        },
+        # Expression attribute values specify placeholders for attribute values to use in your update expressions.
+        ExpressionAttributeValues={
+            ":category": "Bebes",
+            ":description": "Productos para bebé",
+        },
+        # UpdateExpression declares the updates you want to perform on your item.
+        # For more details about update expressions, see https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.UpdateExpressions.html
+        UpdateExpression="SET #category = :category, #description = :description",
+    )
 
     headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': "Content-Type",
-        'Access-Control-Allow-Methods': "OPTIONS,POST,GET"
+        'Access-Control-Allow-Methods': "OPTIONS,POST,GET,PUT"
     }
     # response = dynamo_table
 
@@ -33,7 +44,7 @@ def lambda_handler(event, context):
         "headers": headers,
         "statusCode": 200,
         'body': json.dumps(
-            response['Items'],
+            response,
             indent=4,
             sort_keys=False,
             default=str

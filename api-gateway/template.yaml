@@ -9,6 +9,18 @@ Parameters:
   GetCategories:
     Type: String
     Description: GetCategories Function ARN
+  CreateCategory:
+    Type: String
+    Description: CreateCategory Function ARN
+  ReadCategory:
+    Type: String
+    Description: ReadCategory Function ARN
+  UpdateCategory:
+    Type: String
+    Description: UpdateCategory Function ARN
+  DeleteCategory:
+    Type: String
+    Description: DeleteCategory Function ARN
 
   CognitoUserPool:
     Type: String
@@ -67,6 +79,10 @@ Resources:
                 Effect: Allow
                 Resource:
                   - Ref: GetCategories
+                  - Ref: CreateCategory
+                  - Ref: ReadCategory
+                  - Ref: UpdateCategory
+                  - Ref: DeleteCategory
 
 Outputs:
   TransportAppApiEndpoint:
