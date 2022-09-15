@@ -8,9 +8,9 @@ import json
 import jwt
 import os
 
-# client = boto3.client('ssm')
 
 def lambda_handler(event, context):
+    categoryId = event['pathParameters']['id']
     dynamo_table_name = os.environ.get('CATEGORIES_TABLE')
     
     dynamo_table = get_dynamo_table(dynamo_table_name)
@@ -20,8 +20,16 @@ def lambda_handler(event, context):
     #     KeyConditionExpression="Id > 0"
     # )
 
-    response = dynamo_table.get_item(Key={"Id": "a7aaba4cd4684a1eb764d524cd55bd11"})
-
+    try:
+        statusCode = 200
+        response = dynamo_table.get_item(Key={"Id": categoryId})
+        response = response['Item']
+    except:
+        statusCode = 400
+        response = {
+            "errorMsg": "No se encuentra la categoría"
+        }
+        
     headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': "Content-Type",
@@ -31,9 +39,9 @@ def lambda_handler(event, context):
 
     return {
         "headers": headers,
-        "statusCode": 200,
+        "statusCode": statusCode,
         'body': json.dumps(
-            response['Items'],
+            response,
             indent=4,
             sort_keys=False,
             default=str

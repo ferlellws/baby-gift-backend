@@ -15,12 +15,18 @@ def lambda_handler(event, context):
     dynamo_table_name = os.environ.get('CATEGORIES_TABLE')
 
     dynamo_table = get_dynamo_table(dynamo_table_name)
+    
+    body = json.loads(event['body'])
+    name = body['Name']
+    description = body['Description']
+    parent_id = body['ParentId'] if body['ParentId'] else ''
+    active = body['Active'] if body['Active'] else True
 
     response = dynamo_table.put_item(Item={
         'Id': uuid.uuid4().hex,
-        'Name': 'Bebes',
-        'Description': 'Productos de solo bebé',
-        'ParentId': '',
+        'Name': name,
+        'Description': description,
+        'ParentId': parent_id,
         'Active': True
     })
 
@@ -29,7 +35,6 @@ def lambda_handler(event, context):
         'Access-Control-Allow-Headers': "Content-Type",
         'Access-Control-Allow-Methods': "OPTIONS,POST"
     }
-    # response = dynamo_table
 
     return {
         "headers": headers,
