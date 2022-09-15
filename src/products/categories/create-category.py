@@ -18,7 +18,7 @@ def lambda_handler(event, context):
 
     response = dynamo_table.put_item(Item={
         'Id': uuid.uuid4().hex,
-        'Name': 'Bebes'
+        'Name': 'Bebes',
         'Description': 'Productos de solo bebé',
         'ParentId': '',
         'Active': True
