@@ -1,0 +1,185 @@
+// Tabla categorias
+[
+  {
+    category: "Bebes",
+    description: "Descripcion de la categoria",
+    active: true,
+    subcategories: [
+      {
+        category: "aseo",
+        description: "Descripcion de la subcategoria",
+        active: true,
+        subcategories: [
+          {
+            category: "Pañales",
+            description: "Descripcion de la subcategoria",
+            active: true,
+          },
+        ]
+      },
+      {
+        category: "accesorios",
+        description: "Descripcion de la subcategoria",
+        active: true,
+        subcategories: [
+          {
+            category: "Silla",
+            description: "Descripcion de la subcategoria",
+            active: true,
+          },
+        ]
+      },
+    ]
+  },
+],
+
+[aseo, pañales, accesorios, silla],
+
+[
+  {
+    product: "Camisa oso",
+    brand: "H&M",
+    category: "Camisas",
+    features: [
+      {
+        colors: [
+          {
+            name: "verde",
+            isDefault: true,
+          },
+          {
+            name: "rojo",
+            isDefault: false,
+          },
+        ],
+        sizes: [
+          {
+            name: "xs",
+            isDefault: true
+          },
+          {
+            name: "s",
+            isDefault: false
+          },
+        ]
+      },
+    ],
+    price: "$10.000",
+    discount: {
+      percentage: "20%"
+    }
+  },
+  {
+    product: "Camisa aguila",
+    brand: "H&M",
+    category: "Camisas",
+    features: [
+      {
+        colors: [
+          {
+            name: "verde",
+            isDefault: true,
+          },
+          {
+            name: "rojo",
+            isDefault: false,
+          },
+        ],
+        sizes: [
+          {
+            name: "xs",
+            isDefault: true
+          },
+          {
+            name: "s",
+            isDefault: false
+          },
+        ]
+      },
+    ],
+    price: "$10.000",
+    discount: {
+      price: "$1000"
+    }
+  },
+  {
+    product: "Pañales Winny",
+    description: "Descripcion del producto",
+    brand: "Winny",
+    category: "Pañales",
+    images: [
+      {
+        name: "Image 1",
+        src: "images/image1.jpg",
+        thumnail: "images/thumnail1.jpg",
+        isDefault: true
+      },
+      {
+        name: "Image 2",
+        src: "images/image2.jpg",
+        isDefault: false
+      },
+    ],
+    features: [
+      {
+        sizes: [
+          {
+            name: "Etapa 1",
+            isDefault: true
+          },
+          {
+            name: "Etapa 2",
+            isDefault: false
+          },
+        ],
+        units: [
+          {
+            name: "30",
+            isDefault: true
+          },
+          {
+            name: "50",
+            isDefault: false
+          },
+        ]
+      },
+    ],
+    price: "$10.000",
+    discount: {
+      points: "1000"
+    },
+    specs: "[Texto en HTML]"
+  },
+  {
+    product: "Camisa oso roja",
+    brand: "H&M",
+    category: "Camisas",
+    features: [
+      {
+        sizes: [
+          {
+            name: "xs",
+            isDefault: true
+          },
+          {
+            name: "s",
+            isDefault: false
+          },
+        ]
+      },
+    ],
+    price: "$10.000",
+    discount: null
+  },
+  {
+    product: "Monitores de bebe",
+    brand: "Gatito",
+    category: "Accesorios",
+    features: [
+    ],
+    price: "$10.000",
+    discount: {
+      percentage: "20%"
+    }
+  },
+]

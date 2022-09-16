@@ -7,7 +7,7 @@ Description: >
 
 Globals:
   Function:
-    Timeout: 5
+    Timeout: 60
     Runtime: python3.9
     Environment:
       Variables:
@@ -64,7 +64,7 @@ Resources:
   Categories:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub "${AWS::StackName}-BabyGift-Categories"
+      TableName: "BabyGift-Categories"
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
         - AttributeName: "Id"

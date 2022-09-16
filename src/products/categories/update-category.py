@@ -12,12 +12,13 @@ import uuid
 # client = boto3.client('ssm')
 
 def lambda_handler(event, context):
+    categoryId = event['pathParameters']['id']
     dynamo_table_name = os.environ.get('CATEGORIES_TABLE')
     
     dynamo_table = get_dynamo_table(dynamo_table_name)
 
     response = dynamo_table.update_item(
-        Key={"Id": "a7aaba4cd4684a1eb764d524cd55bd11"},
+        Key={"Id": categoryId},
         # Expression attribute names specify placeholders for attribute names to use in your update expressions.
         ExpressionAttributeNames={
             "#category": "Category",
