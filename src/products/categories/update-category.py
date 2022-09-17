@@ -11,30 +11,14 @@ import uuid
 
 from re import sub
 
-# client = boto3.client('ssm')
 
 def lambda_handler(event, context):
     obj_attributes = json.loads(event['body'])
-    categoryId = event['pathParameters']['id']
+    category_id = event['pathParameters']['id']
 
-    response = update_item(categoryId, obj_attributes)
+    response = update_item(category_id, obj_attributes)
 
-    headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': "Content-Type",
-        'Access-Control-Allow-Methods': "OPTIONS,POST,GET,PUT"
-    }
-
-    return {
-        "headers": headers,
-        "statusCode": 200,
-        'body': json.dumps(
-            response,
-            indent=4,
-            sort_keys=False,
-            default=str
-        )
-    }
+    return get_response_json(response)
 
 
 def get_dynamo_table(dynamo_table_name):
@@ -88,3 +72,22 @@ def get_parameters_to_update(obj_attributes):
 def camel_case(s):
     s = sub(r"(_|-)+", " ", s).title().replace(" ", "")
     return ''.join([s[0].lower(), s[1:]])
+
+
+def get_response_json(response):
+    headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': "Content-Type",
+        'Access-Control-Allow-Methods': "OPTIONS,POST,GET,PUT"
+    }
+
+    return {
+        "headers": headers,
+        "statusCode": 200,
+        'body': json.dumps(
+            response,
+            indent=4,
+            sort_keys=False,
+            default=str
+        )
+    }
