@@ -18,8 +18,8 @@ Resources:
   GetCategories:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./
-      Handler: get-categories.lambda_handler
+      CodeUri: ./get-categories
+      Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Categories
@@ -36,8 +36,8 @@ Resources:
   ReadCategory:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./
-      Handler: read-category.lambda_handler
+      CodeUri: ./read-category
+      Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Categories
@@ -45,8 +45,8 @@ Resources:
   UpdateCategory:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./
-      Handler: update-category.lambda_handler
+      CodeUri: ./update-category
+      Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Categories
@@ -54,8 +54,8 @@ Resources:
   DeleteCategory:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./
-      Handler: delete-category.lambda_handler
+      CodeUri: ./delete-category
+      Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Categories

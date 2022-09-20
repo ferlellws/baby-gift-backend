@@ -9,13 +9,12 @@ import jwt
 import os
 import uuid
 
-# client = boto3.client('ssm')
 
 def lambda_handler(event, context):
     dynamo_table_name = os.environ.get('CATEGORIES_TABLE')
 
     dynamo_table = get_dynamo_table(dynamo_table_name)
-    
+
     body = json.loads(event['body'])
     name = body['Name']
     description = body['Description']
@@ -27,7 +26,7 @@ def lambda_handler(event, context):
         'Name': name,
         'Description': description,
         'ParentId': parent_id,
-        'Active': True
+        'Active': active
     })
 
     headers = {
