@@ -11,6 +11,10 @@ import uuid
 
 
 def lambda_handler(event, context):
+    encoded_jwt = jwt.encode({"some": "payload"}, "secret", algorithm="HS256")
+    print("========================================")
+    print(encoded_jwt)
+    print("========================================")
     dynamo_table_name = os.environ.get('CATEGORIES_TABLE')
 
     dynamo_table = get_dynamo_table(dynamo_table_name)
@@ -20,11 +24,6 @@ def lambda_handler(event, context):
     description = body['Description']
     parent_id = body['ParentId'] if body['ParentId'] else ''
     active = body['Active'] if body['Active'] else True
-    
-    encoded_jwt = jwt.encode({"some": "payload"}, "secret", algorithm="HS256")
-    print("========================================")
-    print(encoded_jwt)
-    print("========================================")
 
     response = dynamo_table.put_item(Item={
         'Id': uuid.uuid4().hex,
