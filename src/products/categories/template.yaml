@@ -18,7 +18,7 @@ Globals:
     Runtime: python3.9
     Environment:
       Variables:
-        CATEGORIES_TABLE: !Ref Categories
+        CATEGORIES_TABLE: !Ref CategoriesTable
         AWS_ENV: "PROD"
 
 
@@ -30,7 +30,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref Categories
+            TableName: !Ref CategoriesTable
 
   CreateCategory:
     Type: AWS::Serverless::Function
@@ -39,7 +39,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref Categories
+            TableName: !Ref CategoriesTable
       Layers:
         - !Ref LayerLibsPython
 
@@ -50,7 +50,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref Categories
+            TableName: !Ref CategoriesTable
 
   UpdateCategory:
     Type: AWS::Serverless::Function
