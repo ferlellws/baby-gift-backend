@@ -23,7 +23,7 @@ Resources:
     Type: AWS::Serverless::Application
     Properties:
       Location: ./categories/template.yaml
-      parameters:
+      Parameters:
         LayerLibsPython: !Ref LayerLibsPython
 
 
