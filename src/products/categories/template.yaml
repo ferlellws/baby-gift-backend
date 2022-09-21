@@ -40,8 +40,8 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Categories
-      # Layers:
-      #   - !Ref LayerLibsPython
+      Layers:
+        - !Ref LayerLibsPython
 
   ReadCategory:
     Type: AWS::Serverless::Function
