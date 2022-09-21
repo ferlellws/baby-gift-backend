@@ -46,6 +46,6 @@ Resources:
     Properties:
       LayerName: layer-lib-python
       Description: Librerías para funciones lambda de Python.
-      ContentUri: shared/libs/.
+      ContentUri: src/shared/libs/.
       CompatibleRuntimes:
         - python3.9
