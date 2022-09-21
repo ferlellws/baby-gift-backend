@@ -5,16 +5,26 @@ Description: >
 
   En este template se crean todos los maestros de tenant de la aplicación de transportes
 
+
+Parameters:
+  LayerLibsPython:
+    Type: String
+    Description: Referencia a las librerias para python
+
+
 Globals:
   Function:
     Timeout: 5
     Runtime: nodejs16.x
+
 
 Resources:
   CategoriesModule:
     Type: AWS::Serverless::Application
     Properties:
       Location: ./categories/template.yaml
+      parameters:
+        LayerLibsPython: !Ref LayerLibsPython
 
 
 Outputs:
@@ -33,3 +43,6 @@ Outputs:
   DeleteCategory:
     Description: "DeleteCategory Lambda  ARN"
     Value: !GetAtt CategoriesModule.Outputs.DeleteCategory
+  LayerLibsPython:
+    Description: "Salida de referencia librerias python"
+    Value: !Ref LayerLibsPython

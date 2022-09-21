@@ -5,6 +5,13 @@ Description: >
 
   En este template se crean todos los maestros de la aplicación de transportes
 
+
+Parameters:
+  LayerLibsPython:
+    Type: String
+    Description: Referencia a las librerias para python
+
+
 Globals:
   Function:
     Timeout: 60
@@ -13,6 +20,7 @@ Globals:
       Variables:
         CATEGORIES_TABLE: !Ref Categories
         AWS_ENV: "PROD"
+
 
 Resources:
   GetCategories:
@@ -32,6 +40,8 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Categories
+      Layers:
+        - !Ref LayerLibsPython
 
   ReadCategory:
     Type: AWS::Serverless::Function
@@ -58,10 +68,10 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref Categories
+            TableName: !Ref CategoriesTable
 
 
-  Categories:
+  CategoriesTable:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: "BabyGift-Categories"

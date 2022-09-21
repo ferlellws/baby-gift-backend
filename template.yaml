@@ -21,6 +21,9 @@ Resources:
     Type: AWS::Serverless::Application
     Properties:
       Location: ./src/products/template.yaml
+      Parameters:
+        # LIBRERIA PYTHON
+        LayerLibsPython: !Ref LayerLibsPython
     DependsOn: Cognito
 
   Api:
@@ -37,3 +40,12 @@ Resources:
         UpdateCategory: !GetAtt ProductsModule.Outputs.UpdateCategory
         DeleteCategory: !GetAtt ProductsModule.Outputs.DeleteCategory
     DependsOn: Cognito
+
+  LayerLibsPython:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: layer-lib-python
+      Description: Librerías para funciones lambda de Python.
+      ContentUri: shared/lib/.
+      CompatibleRuntimes:
+        - python3.9
