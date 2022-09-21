@@ -18,7 +18,7 @@ Globals:
     Runtime: python3.9
     Environment:
       Variables:
-        CATEGORIES_TABLE: !Ref CategoriesTable
+        CATEGORIES_TABLE: !Ref Categories
         AWS_ENV: "PROD"
 
 
@@ -30,7 +30,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref CategoriesTable
+            TableName: !Ref Categories
 
   CreateCategory:
     Type: AWS::Serverless::Function
@@ -39,7 +39,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref CategoriesTable
+            TableName: !Ref Categories
       Layers:
         - !Ref LayerLibsPython
 
@@ -50,7 +50,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref CategoriesTable
+            TableName: !Ref Categories
 
   UpdateCategory:
     Type: AWS::Serverless::Function
@@ -59,7 +59,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref CategoriesTable
+            TableName: !Ref Categories
 
   DeleteCategory:
     Type: AWS::Serverless::Function
@@ -68,10 +68,10 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref CategoriesTable
+            TableName: !Ref Categories
 
 
-  CategoriesTable:
+  Categories:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: "BabyGift-Categories"
