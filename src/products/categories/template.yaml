@@ -31,6 +31,8 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Categories
+      Layers:
+        - !Ref LayerLibsPython
 
   CreateCategory:
     Type: AWS::Serverless::Function
@@ -51,6 +53,8 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Categories
+      Layers:
+        - !Ref LayerLibsPython
 
   UpdateCategory:
     Type: AWS::Serverless::Function
@@ -60,6 +64,8 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Categories
+      Layers:
+        - !Ref LayerLibsPython
 
   DeleteCategory:
     Type: AWS::Serverless::Function
@@ -69,6 +75,8 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Categories
+      Layers:
+        - !Ref LayerLibsPython
 
 
   Categories:
