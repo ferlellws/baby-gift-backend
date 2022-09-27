@@ -20,9 +20,9 @@ Resources:
   ProductsModule:
     Type: AWS::Serverless::Application
     Properties:
-      Location: ./src/products/template.yaml
+      Location: ./src/products-module/template.yaml
       Parameters:
-        # LIBRERIA PYTHON
+        # PYTHON LIBRARY
         LayerLibsPython: !Ref LayerLibsPython
     DependsOn: Cognito
 
@@ -39,6 +39,12 @@ Resources:
         ReadCategory: !GetAtt ProductsModule.Outputs.ReadCategory
         UpdateCategory: !GetAtt ProductsModule.Outputs.UpdateCategory
         DeleteCategory: !GetAtt ProductsModule.Outputs.DeleteCategory
+        # PRODUCTS FUNCTIONS
+        GetProducts: !GetAtt ProductsModule.Outputs.GetProducts
+        CreateProduct: !GetAtt ProductsModule.Outputs.CreateProduct
+        ReadProduct: !GetAtt ProductsModule.Outputs.ReadProduct
+        UpdateProduct: !GetAtt ProductsModule.Outputs.UpdateProduct
+        DeleteProduct: !GetAtt ProductsModule.Outputs.DeleteProduct
     DependsOn: Cognito
 
   LayerLibsPython:
