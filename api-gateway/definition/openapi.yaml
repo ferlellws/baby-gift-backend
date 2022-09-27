@@ -5,6 +5,7 @@ info:
 servers:
   - url: /Prod
 paths:
+  # CATEGORIES ENDPOINTS
   /categories:
     options:
       summary: CORS support
@@ -81,7 +82,62 @@ paths:
               application/json: |
                 {}
   /categories/{id+}:
+    options:
+      summary: CORS support
+      description: |
+        Enable CORS by returning correct headers
+      tags:
+      - CORS
+      responses:
+        200:
+          description: Default response for CORS method
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                '$ref': '#/definitions/Empty'
+      x-amazon-apigateway-integration:
+          type: mock
+          credentials:
+            Fn::GetAtt:
+              - ApiGwExecutionRole
+              - Arn
+          requestTemplates:
+            application/json: |
+              {
+                "statusCode" : 200
+              }
+          responses:
+            default:
+              statusCode: "200"
+              responseParameters:
+                method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+                method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+                method.response.header.Access-Control-Allow-Origin: "'*'"
+              responseTemplates:
+                application/json: |
+                  {}
     get:
+      responses:
+        200:
+          description: "OK"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Empty'
       x-amazon-apigateway-integration:
         credentials:
           Fn::GetAtt:
@@ -92,7 +148,26 @@ paths:
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ReadCategory}/invocations
         passthroughBehavior: when_no_match
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: |
+                {}
     put:
+      responses:
+        200:
+          description: "OK"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Empty'
       x-amazon-apigateway-integration:
         credentials:
           Fn::GetAtt:
@@ -103,7 +178,26 @@ paths:
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${UpdateCategory}/invocations
         passthroughBehavior: when_no_match
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: |
+                {}
     delete:
+      responses:
+        200:
+          description: "OK"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Empty'
       x-amazon-apigateway-integration:
         credentials:
           Fn::GetAtt:
@@ -114,8 +208,71 @@ paths:
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteCategory}/invocations
         passthroughBehavior: when_no_match
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: |
+                {}
   /categories/new:
+    options:
+      summary: CORS support
+      description: |
+        Enable CORS by returning correct headers
+      tags:
+      - CORS
+      responses:
+        200:
+          description: Default response for CORS method
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                '$ref': '#/definitions/Empty'
+      x-amazon-apigateway-integration:
+          type: mock
+          credentials:
+            Fn::GetAtt:
+              - ApiGwExecutionRole
+              - Arn
+          requestTemplates:
+            application/json: |
+              {
+                "statusCode" : 200
+              }
+          responses:
+            default:
+              statusCode: "200"
+              responseParameters:
+                method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+                method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+                method.response.header.Access-Control-Allow-Origin: "'*'"
+              responseTemplates:
+                application/json: |
+                  {}
     post:
+      responses:
+        200:
+          description: "OK"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Empty'
       x-amazon-apigateway-integration:
         credentials:
           Fn::GetAtt:
@@ -126,4 +283,309 @@ paths:
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateCategory}/invocations
         passthroughBehavior: when_no_match
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: |
+                {}
+
+  # PRODUCTS ENDPOINTS
+  /products:
+    options:
+      summary: CORS support
+      description: |
+        Enable CORS by returning correct headers
+      tags:
+      - CORS
+      responses:
+        200:
+          description: Default response for CORS method
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                '$ref': '#/definitions/Empty'
+      x-amazon-apigateway-integration:
+          type: mock
+          credentials:
+            Fn::GetAtt:
+              - ApiGwExecutionRole
+              - Arn
+          requestTemplates:
+            application/json: |
+              {
+                "statusCode" : 200
+              }
+          responses:
+            default:
+              statusCode: "200"
+              responseParameters:
+                method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+                method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+                method.response.header.Access-Control-Allow-Origin: "'*'"
+              responseTemplates:
+                application/json: |
+                  {}
+    get:
+      responses:
+        200:
+          description: "OK"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Empty'
+      x-amazon-apigateway-integration:
+        credentials:
+          Fn::GetAtt:
+            - ApiGwExecutionRole
+            - Arn
+        type: aws_proxy
+        httpMethod: POST
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetProducts}/invocations
+        passthroughBehavior: when_no_match
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: |
+                {}
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: |
+                {}
+
+  /products/{id+}:
+    options:
+      summary: CORS support
+      description: |
+        Enable CORS by returning correct headers
+      tags:
+      - CORS
+      responses:
+        200:
+          description: Default response for CORS method
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                '$ref': '#/definitions/Empty'
+      x-amazon-apigateway-integration:
+          type: mock
+          credentials:
+            Fn::GetAtt:
+              - ApiGwExecutionRole
+              - Arn
+          requestTemplates:
+            application/json: |
+              {
+                "statusCode" : 200
+              }
+          responses:
+            default:
+              statusCode: "200"
+              responseParameters:
+                method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+                method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+                method.response.header.Access-Control-Allow-Origin: "'*'"
+              responseTemplates:
+                application/json: |
+                  {}
+    get:
+      responses:
+        200:
+          description: "OK"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Empty'
+      x-amazon-apigateway-integration:
+        credentials:
+          Fn::GetAtt:
+            - ApiGwExecutionRole
+            - Arn
+        type: aws_proxy
+        httpMethod: POST
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ReadProduct}/invocations
+        passthroughBehavior: when_no_match
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: |
+                {}
+    put:
+      responses:
+        200:
+          description: "OK"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Empty'
+      x-amazon-apigateway-integration:
+        credentials:
+          Fn::GetAtt:
+            - ApiGwExecutionRole
+            - Arn
+        type: aws_proxy
+        httpMethod: POST
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${UpdateProduct}/invocations
+        passthroughBehavior: when_no_match
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: |
+                {}
+    delete:
+      responses:
+        200:
+          description: "OK"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Empty'
+      x-amazon-apigateway-integration:
+        credentials:
+          Fn::GetAtt:
+            - ApiGwExecutionRole
+            - Arn
+        type: aws_proxy
+        httpMethod: POST
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteProduct}/invocations
+        passthroughBehavior: when_no_match
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: |
+                {}
+
+  /products/new:
+    options:
+      summary: CORS support
+      description: |
+        Enable CORS by returning correct headers
+      tags:
+      - CORS
+      responses:
+        200:
+          description: Default response for CORS method
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                '$ref': '#/definitions/Empty'
+      x-amazon-apigateway-integration:
+          type: mock
+          credentials:
+            Fn::GetAtt:
+              - ApiGwExecutionRole
+              - Arn
+          requestTemplates:
+            application/json: |
+              {
+                "statusCode" : 200
+              }
+          responses:
+            default:
+              statusCode: "200"
+              responseParameters:
+                method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+                method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+                method.response.header.Access-Control-Allow-Origin: "'*'"
+              responseTemplates:
+                application/json: |
+                  {}
+    post:
+      responses:
+        200:
+          description: "OK"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Empty'
+      x-amazon-apigateway-integration:
+        credentials:
+          Fn::GetAtt:
+            - ApiGwExecutionRole
+            - Arn
+        type: aws_proxy
+        httpMethod: POST
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateProduct}/invocations
+        passthroughBehavior: when_no_match
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: |
+                {}
 components: {}

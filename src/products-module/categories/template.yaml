@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  EndPoint Masters
+  EndPoint Categorías
 
-  En este template se crean todos los maestros de la aplicación de transportes
+  En este template se crean los EndPoints de categorías
 
 
 Parameters:
@@ -14,11 +14,13 @@ Parameters:
 
 Globals:
   Function:
-    Timeout: 60
+    Timeout: 10
     Runtime: python3.9
+    Layers:
+      - !Ref LayerLibsPython
     Environment:
       Variables:
-        CATEGORIES_TABLE: !Ref Categories
+        CATEGORIES_TABLE: !Ref CategoriesTable
         AWS_ENV: "PROD"
 
 
@@ -30,9 +32,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref Categories
-      Layers:
-        - !Ref LayerLibsPython
+            TableName: !Ref CategoriesTable
 
   CreateCategory:
     Type: AWS::Serverless::Function
@@ -41,9 +41,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref Categories
-      Layers:
-        - !Ref LayerLibsPython
+            TableName: !Ref CategoriesTable
 
   ReadCategory:
     Type: AWS::Serverless::Function
@@ -52,9 +50,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref Categories
-      Layers:
-        - !Ref LayerLibsPython
+            TableName: !Ref CategoriesTable
 
   UpdateCategory:
     Type: AWS::Serverless::Function
@@ -63,9 +59,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref Categories
-      Layers:
-        - !Ref LayerLibsPython
+            TableName: !Ref CategoriesTable
 
   DeleteCategory:
     Type: AWS::Serverless::Function
@@ -74,22 +68,19 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref Categories
-      Layers:
-        - !Ref LayerLibsPython
+            TableName: !Ref CategoriesTable
 
 
-  Categories:
+  CategoriesTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: "BabyGift-Categories"
+      TableName: !Sub ${AWS::StackName}-Categories
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
         - AttributeName: "Id"
           AttributeType: "S"
       KeySchema:
-        -
-          AttributeName: "Id"
+        - AttributeName: "Id"
           KeyType: "HASH"
 
 

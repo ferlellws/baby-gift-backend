@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  EndPoint Masters
+
+  En este template se crean todos los maestros de tenant de la aplicación de transportes
+
+
+Parameters:
+  LayerLibsPython:
+    Type: String
+    Description: Referencia a las librerias para python
+
+
+Resources:
+  CategoriesFunctions:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: ./categories/template.yaml
+      Parameters:
+        LayerLibsPython: !Ref LayerLibsPython
+
+  ProductsFunctions:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: ./products/template.yaml
+      Parameters:
+        LayerLibsPython: !Ref LayerLibsPython
+
+
+Outputs:
+  # PYTHON LIBRARY
+  LayerLibsPython:
+    Description: "Salida de referencia librerias python"
+    Value: !Ref LayerLibsPython
+  # CATEGORIES ENDPOINTS
+  GetCategories:
+    Description: "GetCategories Lambda  ARN"
+    Value: !GetAtt CategoriesFunctions.Outputs.GetCategories
+  CreateCategory:
+    Description: "CreateCategory Lambda  ARN"
+    Value: !GetAtt CategoriesFunctions.Outputs.CreateCategory
+  ReadCategory:
+    Description: "ReadCategory Lambda  ARN"
+    Value: !GetAtt CategoriesFunctions.Outputs.ReadCategory
+  UpdateCategory:
+    Description: "UpdateCategory Lambda  ARN"
+    Value: !GetAtt CategoriesFunctions.Outputs.UpdateCategory
+  DeleteCategory:
+    Description: "DeleteCategory Lambda  ARN"
+    Value: !GetAtt CategoriesFunctions.Outputs.DeleteCategory
+  # PRODUCTS ENDPOINTS
+  GetProducts:
+    Description: "GetProducts Lambda Function ARN"
+    Value: !GetAtt ProductsFunctions.Outputs.GetProducts
+  CreateProduct:
+    Description: "CreateProduct Lambda Function ARN"
+    Value: !GetAtt ProductsFunctions.Outputs.CreateProduct
+  ReadProduct:
+    Description: "ReadProduct Lambda Function ARN"
+    Value: !GetAtt ProductsFunctions.Outputs.ReadProduct
+  UpdateProduct:
+    Description: "UpdateProduct Lambda Function ARN"
+    Value: !GetAtt ProductsFunctions.Outputs.UpdateProduct
+  DeleteProduct:
+    Description: "DeleteProduct Lambda Function ARN"
+    Value: !GetAtt ProductsFunctions.Outputs.DeleteProduct

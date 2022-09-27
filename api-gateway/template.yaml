@@ -6,6 +6,7 @@ Description: >
   Root stack for managing orders-app resources
 
 Parameters:
+  # CATEGORIES PARAMETERS
   GetCategories:
     Type: String
     Description: GetCategories Function ARN
@@ -21,6 +22,22 @@ Parameters:
   DeleteCategory:
     Type: String
     Description: DeleteCategory Function ARN
+  # PRODUCTS PARAMETERS
+  GetProducts:
+    Type: String
+    Description: GetProducts Function ARN
+  CreateProduct:
+    Type: String
+    Description: CreateProduct Function ARN
+  ReadProduct:
+    Type: String
+    Description: ReadProduct Function ARN
+  UpdateProduct:
+    Type: String
+    Description: UpdateProduct Function ARN
+  DeleteProduct:
+    Type: String
+    Description: DeleteProduct Function ARN
 
   CognitoUserPool:
     Type: String
@@ -78,11 +95,18 @@ Resources:
               - Action: lambda:*
                 Effect: Allow
                 Resource:
+                  # CATEGORIES FUNCTIONS
                   - Ref: GetCategories
                   - Ref: CreateCategory
                   - Ref: ReadCategory
                   - Ref: UpdateCategory
                   - Ref: DeleteCategory
+                  # PRODUCTS FUNCTIONS
+                  - Ref: GetProducts
+                  - Ref: CreateProduct
+                  - Ref: ReadProduct
+                  - Ref: UpdateProduct
+                  - Ref: DeleteProduct
 
 Outputs:
   TransportAppApiEndpoint:
