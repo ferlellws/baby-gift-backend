@@ -1,4 +1,4 @@
-# transportApp
+# BabyGift
 This is an AWS SAM app that uses Rekognition APIs to detect text in S3 Objects and stores labels in DynamoDB.
 
 ## Project structure
@@ -43,7 +43,7 @@ The `sam deploy` command will create a Cloudformation Stack and deploy your SAM 
 ```bash
 sam deploy \
     --template-file packaged.yaml \
-    --stack-name transportapp \
+    --stack-name BabyGift \
     --capabilities CAPABILITY_IAM \
     --parameter-overrides MyParameterSample=MySampleValue
 ```
@@ -51,5 +51,5 @@ sam deploy \
 To see the names of the S3 bucket and DynamoDB table created after deployment, you can use the `aws cloudformation describe-stacks` command.
 ```bash
 aws cloudformation describe-stacks \
-    --stack-name transportapp --query 'Stacks[].Outputs'
+    --stack-name BabyGift --query 'Stacks[].Outputs'
 ```

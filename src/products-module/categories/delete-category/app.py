@@ -1,4 +1,5 @@
 import sys
+from unicodedata import category
 from urllib import response
 import boto3
 from boto3.dynamodb.conditions import Key
@@ -12,12 +13,17 @@ import uuid
 # client = boto3.client('ssm')
 
 def lambda_handler(event, context):
-    dynamo_table_name = os.environ.get('CATEGORIES_TABLE')
+    dynamo_table_name = os.environ.get('MAIN_TABLE_BABYGIFT')
     
     dynamo_table = get_dynamo_table(dynamo_table_name)
-
+    
+    pathParameters = event['pathParameters']
+    category_id = "category#" + pathParameters['id']
     response = dynamo_table.delete_item(
-        Key={"Id": "a7aaba4cd4684a1eb764d524cd55bd11"}
+        Key={
+            "PK": category_id,
+            "SK": "CATEGORY"
+        }
     )
 
     headers = {

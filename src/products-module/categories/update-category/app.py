@@ -9,37 +9,51 @@ import jwt
 import os
 import uuid
 
+from functions import get_dynamo_table
+
+
 from re import sub
 
 
 def lambda_handler(event, context):
     obj_attributes = json.loads(event['body'])
-    category_id = event['pathParameters']['id']
+    category_id = "category#" + event['pathParameters']['id']
+    print(event)
 
     response = update_item(category_id, obj_attributes)
 
     return get_response_json(response)
 
 
-def get_dynamo_table(dynamo_table_name):
-    aws_environment = os.environ.get('AWS_ENV')
+# def get_dynamo_table(dynamo_table_name):
+#     aws_environment = os.environ.get('AWS_ENV')
 
-    if aws_environment == 'LOCAL':
-        dynamodb = boto3.resource('dynamodb', endpoint_url="http://docker.for.mac.localhost:8000/")
-    else:
-        dynamodb = boto3.resource('dynamodb', region_name="us-east-1")
+#     if aws_environment == 'LOCAL':
+#         dynamodb = boto3.resource('dynamodb', endpoint_url="http://docker.for.mac.localhost:8000/")
+#     else:
+#         dynamodb = boto3.resource('dynamodb', region_name="us-east-1")
 
-    return dynamodb.Table(dynamo_table_name)
+#     return dynamodb.Table(dynamo_table_name)
 
 
-def update_item(categoryId, obj_attributes):
-    dynamo_table_name = os.environ.get('CATEGORIES_TABLE')
+def update_item(category_id, obj_attributes):
+    dynamo_table_name = os.environ.get('MAIN_TABLE_BABYGIFT')
     dynamo_table = get_dynamo_table(dynamo_table_name)
 
     parameters_to_update = get_parameters_to_update(obj_attributes)
+    print(parameters_to_update)
+    print(category_id)
+    print(dynamo_table_name)
 
     response = dynamo_table.update_item(
-        Key={"Id": categoryId},
+        Key={
+            'PK': {
+                'S': category_id
+            },
+            'SK': {
+                'S': 'CATEGORY'
+            },
+        },
         ExpressionAttributeNames=parameters_to_update['expression_attribute_names'],
         ExpressionAttributeValues=parameters_to_update['expression_attribute_values'],
         UpdateExpression=parameters_to_update['update_expression'],

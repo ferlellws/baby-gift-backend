@@ -1,62 +1,68 @@
-import sys
 from urllib import response
-import boto3
 from boto3.dynamodb.conditions import Key
 from boto3.dynamodb.conditions import Attr
 import logging
 import json
-import jwt
 import os
 import uuid
 
+from functions import get_dynamo_table, response_function
+
 
 def lambda_handler(event, context):
-    encoded_jwt = jwt.encode({"some": "payload"}, "secret", algorithm="HS256")
-    print("========================================")
-    print(encoded_jwt)
-    print("========================================")
-    dynamo_table_name = os.environ.get('CATEGORIES_TABLE')
+    category = get_category_to_parameters(event)
 
-    dynamo_table = get_dynamo_table(dynamo_table_name)
+    if validate_parameters(category)['success']:
+        response_save_item = save_item(category)
+    else:
+        response_save_item = {
+            'msg': 'El categoría {} ya existe' . format(category['Name'])
+        }
 
-    body = json.loads(event['body'])
+    msg_error = "No se creó la categoría {}" . format(category['Name'])
+    item_response = {
+        'item': category,
+        'msg': "Categoría {} creada satisfactoriamente" . format(category['Name'])
+    }
+    
+    return response_function(response_save_item, item_response, msg_error)
+
+
+def get_category_to_parameters(parameters):
+    data = parameters["body"]
+    body = json.loads(data)
+    return get_category_json(body)
+
+
+def get_category_json(body):
+    category_id = str(uuid.uuid4().hex)[:8]
     name = body['Name']
     description = body['Description']
-    parent_id = body['ParentId'] if body['ParentId'] else ''
+    parents_id = body['ParentsId'] if body['ParentsId'] else category_id
     active = body['Active'] if body['Active'] else True
 
-    response = dynamo_table.put_item(Item={
-        'Id': uuid.uuid4().hex,
+    return {
+        'PK': "category#" + category_id,
+        'SK': "CATEGORY",
+        'Data': parents_id,
         'Name': name,
         'Description': description,
-        'ParentId': parent_id,
         'Active': active
-    })
-
-    headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': "Content-Type",
-        'Access-Control-Allow-Methods': "OPTIONS,POST"
     }
 
+
+def validate_parameters(category):
+    # TODO: Hacer validación de los parametros entrantes
+    response_validations = True
     return {
-        "headers": headers,
-        "statusCode": 200,
-        'body': json.dumps(
-            response,
-            indent=4,
-            sort_keys=False,
-            default=str
-        )
+        'success': response_validations
     }
 
 
-def get_dynamo_table(dynamo_table_name):
-    aws_environment = os.environ.get('AWS_ENV')
+def save_item(item):
+    dynamo_table_name = os.environ.get('MAIN_TABLE_BABYGIFT')
 
-    if aws_environment == 'LOCAL':
-        dynamodb = boto3.resource('dynamodb', endpoint_url="http://docker.for.mac.localhost:8000/")
-    else:
-        dynamodb = boto3.resource('dynamodb', region_name="us-east-1")
+    items_table = get_dynamo_table(dynamo_table_name)
 
-    return dynamodb.Table(dynamo_table_name)
+    data = items_table.put_item(Item=item)
+    return data

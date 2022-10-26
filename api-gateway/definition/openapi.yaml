@@ -71,7 +71,11 @@ paths:
         type: aws_proxy
         httpMethod: POST
         uri:
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCategories}/invocations
+          Fn::Sub:
+            - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCategories}/invocations
+            - GetCategories:
+                Fn::ImportValue:
+                  Fn::Sub: ${MainStackName}-GetCategories
         passthroughBehavior: when_no_match
         responses:
           default:

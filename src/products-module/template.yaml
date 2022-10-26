@@ -11,6 +11,14 @@ Parameters:
     Type: String
     Description: Referencia a las librerias para python
 
+  MainStackName:
+    Type: String
+    Description: Nombre de la pila maestra
+
+  MainTableBabyGift:
+    Type: String
+    Description: Referencia a la tabla maestra de BabyGift
+
 
 Resources:
   CategoriesFunctions:
@@ -19,6 +27,8 @@ Resources:
       Location: ./categories/template.yaml
       Parameters:
         LayerLibsPython: !Ref LayerLibsPython
+        MainStackName: !Ref MainStackName
+        MainTableBabyGift: !Ref MainTableBabyGift
 
   ProductsFunctions:
     Type: AWS::Serverless::Application
@@ -26,7 +36,8 @@ Resources:
       Location: ./products/template.yaml
       Parameters:
         LayerLibsPython: !Ref LayerLibsPython
-
+        MainStackName: !Ref MainStackName
+        MainTableBabyGift: !Ref MainTableBabyGift
 
 Outputs:
   # PYTHON LIBRARY
@@ -34,9 +45,6 @@ Outputs:
     Description: "Salida de referencia librerias python"
     Value: !Ref LayerLibsPython
   # CATEGORIES ENDPOINTS
-  GetCategories:
-    Description: "GetCategories Lambda  ARN"
-    Value: !GetAtt CategoriesFunctions.Outputs.GetCategories
   CreateCategory:
     Description: "CreateCategory Lambda  ARN"
     Value: !GetAtt CategoriesFunctions.Outputs.CreateCategory

@@ -11,6 +11,14 @@ Parameters:
     Type: String
     Description: Referencia a las librerias para python
 
+  MainStackName:
+    Type: String
+    Description: Nombre de la pila maestra
+  
+  MainTableBabyGift:
+    Type: String
+    Description: Referencia a la tabla maestra de BabyGift
+
 
 Globals:
   Function:
@@ -20,8 +28,9 @@ Globals:
       - !Ref LayerLibsPython
     Environment:
       Variables:
-        CATEGORIES_TABLE: !Ref CategoriesTable
+        MAIN_TABLE_BABYGIFT: !Ref MainTableBabyGift
         AWS_ENV: "PROD"
+        REGION: !Sub ${AWS::Region}
 
 
 Resources:
@@ -32,7 +41,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref CategoriesTable
+            TableName: !Ref MainTableBabyGift
 
   CreateCategory:
     Type: AWS::Serverless::Function
@@ -41,7 +50,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref CategoriesTable
+            TableName: !Ref MainTableBabyGift
 
   ReadCategory:
     Type: AWS::Serverless::Function
@@ -50,7 +59,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref CategoriesTable
+            TableName: !Ref MainTableBabyGift
 
   UpdateCategory:
     Type: AWS::Serverless::Function
@@ -59,7 +68,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref CategoriesTable
+            TableName: !Ref MainTableBabyGift
 
   DeleteCategory:
     Type: AWS::Serverless::Function
@@ -68,26 +77,15 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref CategoriesTable
-
-
-  CategoriesTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      TableName: !Sub ${AWS::StackName}-Categories
-      BillingMode: PAY_PER_REQUEST
-      AttributeDefinitions:
-        - AttributeName: "Id"
-          AttributeType: "S"
-      KeySchema:
-        - AttributeName: "Id"
-          KeyType: "HASH"
+            TableName: !Ref MainTableBabyGift
 
 
 Outputs:
   GetCategories:
     Description: "GetCategories Lambda Function ARN"
     Value: !GetAtt GetCategories.Arn
+    Export:
+      Name: !Sub ${MainStackName}-GetCategories
   CreateCategory:
     Description: "CreateCategory Lambda Function ARN"
     Value: !GetAtt CreateCategory.Arn

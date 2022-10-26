@@ -11,6 +11,14 @@ Parameters:
     Type: String
     Description: Referencia a las librerias para python
 
+  MainStackName:
+    Type: String
+    Description: Nombre de la pila maestra
+
+  MainTableBabyGift:
+    Type: String
+    Description: Referencia a la tabla maestra de BabyGift
+
 
 Globals:
   Function:
@@ -20,8 +28,9 @@ Globals:
       - !Ref LayerLibsPython
     Environment:
       Variables:
-        PRODUCTS_TABLE: !Ref ProductsTable
+        MAIN_TABLE_BABYGIFT: !Ref MainTableBabyGift
         AWS_ENV: "PROD"
+        REGION: !Sub ${AWS::Region}
 
 
 Resources:
@@ -32,7 +41,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref ProductsTable
+            TableName: !Ref MainTableBabyGift
 
   CreateProduct:
     Type: AWS::Serverless::Function
@@ -41,7 +50,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref ProductsTable
+            TableName: !Ref MainTableBabyGift
 
   ReadProduct:
     Type: AWS::Serverless::Function
@@ -50,7 +59,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref ProductsTable
+            TableName: !Ref MainTableBabyGift
 
   UpdateProduct:
     Type: AWS::Serverless::Function
@@ -59,7 +68,7 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref ProductsTable
+            TableName: !Ref MainTableBabyGift
 
   DeleteProduct:
     Type: AWS::Serverless::Function
@@ -68,24 +77,24 @@ Resources:
       Handler: app.lambda_handler
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref ProductsTable
+            TableName: !Ref MainTableBabyGift
 
 
-  ProductsTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      TableName: !Sub ${AWS::StackName}-Products
-      BillingMode: PAY_PER_REQUEST
-      AttributeDefinitions:
-        - AttributeName: "Name"
-          AttributeType: "S"
-        - AttributeName: "VirtualStore"
-          AttributeType: "S"
-      KeySchema:
-        - AttributeName: "Name"
-          KeyType: HASH
-        - AttributeName: "VirtualStore"
-          KeyType: RANGE
+  # MainTableBabyGift:
+  #   Type: AWS::DynamoDB::Table
+  #   Properties:
+  #     TableName: !Sub ${AWS::StackName}-Products
+  #     BillingMode: PAY_PER_REQUEST
+  #     AttributeDefinitions:
+  #       - AttributeName: "Name"
+  #         AttributeType: "S"
+  #       - AttributeName: "VirtualStore"
+  #         AttributeType: "S"
+  #     KeySchema:
+  #       - AttributeName: "Name"
+  #         KeyType: HASH
+  #       - AttributeName: "VirtualStore"
+          # KeyType: RANGE
 
 
 Outputs:

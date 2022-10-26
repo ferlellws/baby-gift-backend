@@ -11,16 +11,14 @@ import os
 # client = boto3.client('ssm')
 
 def lambda_handler(event, context):
-    dynamo_table_name = os.environ.get('CATEGORIES_TABLE')
+    dynamo_table_name = os.environ.get('MAIN_TABLE_BABYGIFT')
     
     dynamo_table = get_dynamo_table(dynamo_table_name)
 
-    # print(dynamo_table)
-    # response = dynamo_table.query(
-    #     KeyConditionExpression="Id > 0"
-    # )
-
-    response = dynamo_table.scan()
+    response = dynamo_table.query(
+        IndexName="GSI_1",
+        KeyConditionExpression=Key('SK').eq('CATEGORY')
+    )
 
     headers = {
         'Access-Control-Allow-Origin': '*',
@@ -43,10 +41,11 @@ def lambda_handler(event, context):
 
 def get_dynamo_table(dynamo_table_name):
     aws_environment = os.environ.get('AWS_ENV')
+    region = os.environ.get('REGION')
 
     if aws_environment == 'LOCAL':
         dynamodb = boto3.resource('dynamodb', endpoint_url="http://docker.for.mac.localhost:8000/")
     else:
-        dynamodb = boto3.resource('dynamodb', region_name="us-east-1")
+        dynamodb = boto3.resource('dynamodb', region_name=region)
 
     return dynamodb.Table(dynamo_table_name)

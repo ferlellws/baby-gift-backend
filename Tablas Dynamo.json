@@ -67,7 +67,8 @@
     price: "$10.000",
     discount: {
       percentage: "20%"
-    }
+    },
+    discontinued: 0
   },
   {
     product: "Camisa aguila",

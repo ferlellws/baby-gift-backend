@@ -24,6 +24,10 @@ Resources:
       Parameters:
         # PYTHON LIBRARY
         LayerLibsPython: !Ref LayerLibsPython
+        # MAIN STACKNAME
+        MainStackName: !Sub ${AWS::StackName}
+        # MAIN TABLE BABYGIFT
+        MainTableBabyGift: !Ref MainTableBabyGift
     DependsOn: Cognito
 
   Api:
@@ -34,7 +38,6 @@ Resources:
         # COGNITO ARN
         CognitoUserPool: !GetAtt Cognito.Outputs.UserPoolARN
         # CATEGORIES FUNCTIONS
-        GetCategories: !GetAtt ProductsModule.Outputs.GetCategories
         CreateCategory: !GetAtt ProductsModule.Outputs.CreateCategory
         ReadCategory: !GetAtt ProductsModule.Outputs.ReadCategory
         UpdateCategory: !GetAtt ProductsModule.Outputs.UpdateCategory
@@ -45,13 +48,87 @@ Resources:
         ReadProduct: !GetAtt ProductsModule.Outputs.ReadProduct
         UpdateProduct: !GetAtt ProductsModule.Outputs.UpdateProduct
         DeleteProduct: !GetAtt ProductsModule.Outputs.DeleteProduct
-    DependsOn: Cognito
+        # MAIN STACKNAME
+        MainStackName: !Sub ${AWS::StackName}
+    DependsOn:
+      - Cognito
+      - ProductsModule
 
   LayerLibsPython:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      LayerName: layer-lib-python
+      LayerName: !Sub ${AWS::StackName}-layer-lib-python
       Description: Librerías para funciones lambda de Python.
       ContentUri: src/shared/libs/.
+      RetentionPolicy: Retain
       CompatibleRuntimes:
         - python3.9
+    DependsOn: Cognito
+
+  MainTableBabyGift:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-MainTableBabyGift
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: "PK"
+          AttributeType: "S"
+        - AttributeName: "SK"
+          AttributeType: "S"
+        - AttributeName: "Data"
+          AttributeType: "S"
+        - AttributeName: "CategoryId"
+          AttributeType: "S"
+        - AttributeName: "SupplierId"
+          AttributeType: "S"
+        - AttributeName: "CustomerId"
+          AttributeType: "S"
+        - AttributeName: "StatusOrder"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "PK"
+          KeyType: HASH
+        - AttributeName: "SK"
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: 'GSI_1'
+          KeySchema:
+            - AttributeName: "SK"
+              KeyType: "HASH"
+            - AttributeName: "Data"
+              KeyType: "RANGE"
+          Projection:
+            ProjectionType: "ALL"
+        - IndexName: 'GSI_2'
+          KeySchema:
+            - AttributeName: "SK"
+              KeyType: "HASH"
+            - AttributeName: "CategoryId"
+              KeyType: "RANGE"
+          Projection:
+            ProjectionType: "ALL"
+        - IndexName: 'GSI_3'
+          KeySchema:
+            - AttributeName: "SK"
+              KeyType: "HASH"
+            - AttributeName: "SupplierId"
+              KeyType: "RANGE"
+          Projection:
+            ProjectionType: "ALL"
+        - IndexName: 'GSI_4'
+          KeySchema:
+            - AttributeName: "SK"
+              KeyType: "HASH"
+            - AttributeName: "CustomerId"
+              KeyType: "RANGE"
+          Projection:
+            ProjectionType: "ALL"
+        - IndexName: 'GSI_5'
+          KeySchema:
+            - AttributeName: "SK"
+              KeyType: "HASH"
+            - AttributeName: "StatusOrder"
+              KeyType: "RANGE"
+          Projection:
+            ProjectionType: "ALL"
+    DependsOn: Cognito

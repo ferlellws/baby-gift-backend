@@ -7,9 +7,6 @@ Description: >
 
 Parameters:
   # CATEGORIES PARAMETERS
-  GetCategories:
-    Type: String
-    Description: GetCategories Function ARN
   CreateCategory:
     Type: String
     Description: CreateCategory Function ARN
@@ -43,9 +40,13 @@ Parameters:
     Type: String
     Description: CreateUser Function ARN
 
+  MainStackName:
+    Type: String
+    Description: Nombre de la pila maestra
+
 
 Resources:
-  TransportAppAdminApi:
+  BabyGiftApi:
     Type: AWS::Serverless::Api
     Properties:
       Name: !Sub ${AWS::StackName}-api-gateway
@@ -95,20 +96,14 @@ Resources:
               - Action: lambda:*
                 Effect: Allow
                 Resource:
-                  # CATEGORIES FUNCTIONS
-                  - Ref: GetCategories
-                  - Ref: CreateCategory
-                  - Ref: ReadCategory
-                  - Ref: UpdateCategory
-                  - Ref: DeleteCategory
-                  # PRODUCTS FUNCTIONS
-                  - Ref: GetProducts
-                  - Ref: CreateProduct
-                  - Ref: ReadProduct
-                  - Ref: UpdateProduct
-                  - Ref: DeleteProduct
+                  Fn::Sub:
+                    - "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${MSNpart1}-${MSNpart2}-*"
+                    - MSNpart1:
+                        !Select [0, !Split ["-", !Sub "${MainStackName}"]]
+                      MSNpart2:
+                        !Select [1, !Split ["-", !Sub "${MainStackName}"]]
 
 Outputs:
   TransportAppApiEndpoint:
     Description: "API Gateway endpoint URL for Prod stage for transport App admin"
-    Value: !Sub "https://${TransportAppAdminApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+    Value: !Sub "https://${BabyGiftApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"

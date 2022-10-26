@@ -11,15 +11,20 @@ import uuid
 
 
 def lambda_handler(event, context):
-    response = "Endpoint para Listar todos los Productos"
+    dynamodb = boto3.resource('dynamodb', region_name="us-east-1")
+
+    product_table = dynamodb.Table(os.environ['PRODUCTS_TABLE'])
+
+    response = product_table.scan()
+
+    headers = {
+        "Content-Type": "application/json"
+    }
 
     return {
-        # "headers": headers,
+        "headers": headers,
         "statusCode": 200,
         'body': json.dumps(
-            response,
-            indent=4,
-            sort_keys=False,
-            default=str
+            response
         )
     }
