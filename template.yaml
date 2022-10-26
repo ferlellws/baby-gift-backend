@@ -22,8 +22,10 @@ Resources:
     Properties:
       Location: ./src/products-module/template.yaml
       Parameters:
-        # PYTHON LIBRARY
+        # PYTHON LIBRARIES
         LayerLibsPython: !Ref LayerLibsPython
+        # PYTHON MODELS
+        LayerModelsPython: !Ref LayerModelsPython
         # MAIN STACKNAME
         MainStackName: !Sub ${AWS::StackName}
         # MAIN TABLE BABYGIFT
@@ -60,6 +62,17 @@ Resources:
       LayerName: !Sub ${AWS::StackName}-layer-lib-python
       Description: Librerías para funciones lambda de Python.
       ContentUri: src/shared/libs/.
+      RetentionPolicy: Retain
+      CompatibleRuntimes:
+        - python3.9
+    DependsOn: Cognito
+
+  LayerModelsPython:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: !Sub ${AWS::StackName}-layer-models-python
+      Description: Modelos para funciones lambda de Python.
+      ContentUri: src/shared/models/.
       RetentionPolicy: Retain
       CompatibleRuntimes:
         - python3.9

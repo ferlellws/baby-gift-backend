@@ -22,7 +22,7 @@ ERROR_HELP_STRINGS = {
 }
 
 
-def create_dynamodb_resourse(dynamo_table_name):
+def create_dynamodb_resource(dynamo_table_name):
     aws_environment = os.environ.get('AWS_ENV')
 
     if aws_environment == 'LOCAL':

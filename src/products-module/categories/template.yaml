@@ -11,6 +11,10 @@ Parameters:
     Type: String
     Description: Referencia a las librerias para python
 
+  LayerModelsPython:
+    Type: String
+    Description: Referencia a las modelos para python
+
   MainStackName:
     Type: String
     Description: Nombre de la pila maestra
@@ -26,6 +30,7 @@ Globals:
     Runtime: python3.9
     Layers:
       - !Ref LayerLibsPython
+      - !Ref LayerModelsPython
     Environment:
       Variables:
         MAIN_TABLE_BABYGIFT: !Ref MainTableBabyGift

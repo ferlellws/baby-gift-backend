@@ -11,6 +11,10 @@ Parameters:
     Type: String
     Description: Referencia a las librerias para python
 
+  LayerModelsPython:
+    Type: String
+    Description: Referencia a las modelos para python
+
   MainStackName:
     Type: String
     Description: Nombre de la pila maestra
@@ -27,6 +31,7 @@ Resources:
       Location: ./categories/template.yaml
       Parameters:
         LayerLibsPython: !Ref LayerLibsPython
+        LayerModelsPython: !Ref LayerModelsPython
         MainStackName: !Ref MainStackName
         MainTableBabyGift: !Ref MainTableBabyGift
 
@@ -36,6 +41,7 @@ Resources:
       Location: ./products/template.yaml
       Parameters:
         LayerLibsPython: !Ref LayerLibsPython
+        LayerModelsPython: !Ref LayerModelsPython
         MainStackName: !Ref MainStackName
         MainTableBabyGift: !Ref MainTableBabyGift
 
@@ -44,6 +50,10 @@ Outputs:
   LayerLibsPython:
     Description: "Salida de referencia librerias python"
     Value: !Ref LayerLibsPython
+  # PYTHON LIBRARY
+  LayerModelsPython:
+    Description: "Salida de referencia a los modelos de python"
+    Value: !Ref LayerModelsPython
   # CATEGORIES ENDPOINTS
   CreateCategory:
     Description: "CreateCategory Lambda  ARN"
