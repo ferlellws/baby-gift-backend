@@ -1,40 +1,51 @@
 from urllib import response
-from boto3.dynamodb.conditions import Key
-from boto3.dynamodb.conditions import Attr
 import logging
 import json
 import os
 import uuid
 
-from functions import get_dynamo_table, response_function
+from functions import response_function
+from category import Category
 
 
 def lambda_handler(event, context):
-    category = get_category_to_parameters(event)
+    dynamo_table_name = os.environ.get('MAIN_TABLE_BABYGIFT')
+    stage = os.environ.get('AWS_ENV')
+    CategoryModel = Category(dynamo_table_name, stage)
 
-    if validate_parameters(category)['success']:
-        response_save_item = save_item(category)
-    else:
-        response_save_item = {
-            'msg': 'El categoría {} ya existe' . format(category['Name'])
-        }
+    parameters = extract_data_parameter(event)
+    response_save_item = CategoryModel.create(parameters)
+    return response_function(response_save_item)
 
-    msg_error = "No se creó la categoría {}" . format(category['Name'])
-    item_response = {
-        'item': category,
-        'msg': "Categoría {} creada satisfactoriamente" . format(category['Name'])
-    }
+
+def extract_data_parameter(parameters):
+    data = parameters["body"]
+    return json.loads(data)
+    # category = get_item_to_parameters(event)
+
+    # if validate_parameters(category)['success']:
+    #     response_save_item = save_item(category)
+    # else:
+    #     response_save_item = {
+    #         'msg': 'El categoría {} ya existe' . format(category['Name'])
+    #     }
+
+    # msg_error = "No se creó la categoría {}" . format(category['Name'])
+    # item_response = {
+    #     'item': category,
+    #     'msg': "Categoría {} creada satisfactoriamente" . format(category['Name'])
+    # }
     
-    return response_function(response_save_item, item_response, msg_error)
+    # return response_function(response_save_item, item_response, msg_error)
 
 
-def get_category_to_parameters(parameters):
+def get_item_to_parameters(parameters):
     data = parameters["body"]
     body = json.loads(data)
-    return get_category_json(body)
+    return get_item_json(body)
 
 
-def get_category_json(body):
+def get_item_json(body):
     category_id = str(uuid.uuid4().hex)[:8]
     name = body['Name']
     description = body['Description']
