@@ -14,20 +14,7 @@ def lambda_handler(event, context):
     ProductModel = Product(dynamo_table_name, stage)
 
     parameters = extract_data_parameter(event)
-    product = ProductModel.new(parameters)
-
-    if validate_parameters(product.item())['valid']:
-        if exist_product(product.item())['exist']:
-            response_save_item = {
-                'error': 'El producto {} ya existe' . format(product['Name'])
-            }
-        else:
-            response_save_item = product.save()
-    else:
-        response_save_item = {
-            'error': 'Algunos campos no pasaron la validación, por favor verifique'
-        }
-
+    response_save_item = ProductModel.create(parameters)
     return response_function(response_save_item)
 
 

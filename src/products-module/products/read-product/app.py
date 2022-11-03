@@ -1,25 +1,15 @@
-import sys
 from urllib import response
-import boto3
-from boto3.dynamodb.conditions import Key
-from boto3.dynamodb.conditions import Attr
 import logging
-import json
-import jwt
 import os
-import uuid
+from product import Product
+from functions import response_function
 
 
 def lambda_handler(event, context):
-    response = "Endpoint para Obtener un Producto"
+    dynamo_table_name = os.environ.get('MAIN_TABLE_BABYGIFT')
+    stage = os.environ.get('AWS_ENV')
+    products = Product(dynamo_table_name, stage)
+    product_id = event["pathParameters"]["id"]
+    response = products.find(product_id)
 
-    return {
-        # "headers": headers,
-        "statusCode": 200,
-        'body': json.dumps(
-            response,
-            indent=4,
-            sort_keys=False,
-            default=str
-        )
-    }
+    return response_function(response, True)

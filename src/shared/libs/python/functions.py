@@ -64,10 +64,15 @@ def handle_error(error):
     )
 
 
-def response_function(response_action_item):
+def response_function(response_action_item, is_items=False):
+    print(response_action_item)
     if "response" in response_action_item and response_action_item['response'] and response_action_item['response']['ResponseMetadata']['HTTPStatusCode'] == 200:
+        if is_items:
+            data = 'response'
+        else:
+            data = 'item'
         response = {
-            "item": response_action_item["item"],
+            data.lower(): response_action_item[data],
             "msg": response_action_item["msg"]
         }
     else:

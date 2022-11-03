@@ -1,4 +1,5 @@
 from datetime import datetime
+from boto3.dynamodb.conditions import Key
 from botocore.exceptions import ClientError
 from connectdb import Connection
 
@@ -36,12 +37,121 @@ class Model:
         }
 
 
-    def new(self, obj):
+    def set_item(self, obj):
         self.obj = obj
 
 
+    def get_item(self):
+        return self.obj
+
+
+    def new(self, obj):
+        self.set_item(obj)
+
+
     def save(self):
-        return self.execute_put_item()
+        data_obj = {
+            "action": 'save',
+        }
+
+        return self.query_execute(data_obj)
+
+
+    def create(self, item):
+        product = self.new(item)
+        return product.save()
+    
+    # TODO: Hacer el método destroy
+    
+    # TODO Hacer el método de update
+
+
+    def find(self, data):
+        data = data.get('id').split('-')
+        pk = data[0]
+        sk = data[1]
+
+        data_obj = {
+            'action': 'find',
+            'pk': pk,
+            'sk': sk
+        }
+        return self.query_execute(data_obj)
+
+
+    def all(self, sk):
+        data_obj = {
+            "action": 'all',
+            "sk": sk
+        }
+        return self.query_execute(data_obj)
+
+
+    def query_execute(self, data_obj):
+        try:
+            return self.query_execute_per_action(data_obj)
+            # Handle response
+        except ClientError as error:
+            return self.get_client_error(error)
+        except BaseException as error:
+            print(error)
+            return self.get_base_exception(error)
+
+
+    def query_execute_per_action(self, data):
+        print(data)
+        action = data['action']
+        if action == 'save':
+            response = self.main_table.put_item(Item=self.obj)
+            return {
+                "response": response,
+                "item": self.obj,
+                "msg": f"""Registro {self.obj['Name']} creado satisfactoriamente"""
+            }
+        elif action == 'find':
+            response = self.main_table.query(
+                KeyConditionExpression=Key('PK').eq(data['pke']) & Key('SK').eq(data['sk'])
+            )
+
+            return {
+                "response": response,
+                "msg": ""
+            }
+        elif action == 'all':
+            print("entra a all")
+            response = self.main_table.query(
+                IndexName="GSI_1",
+                KeyConditionExpression=Key('SK').eq(data['sk'])
+            )
+            return {
+                "response": response,
+                "msg": ""
+            }
+        else:
+            return {
+                "item": "No existe esta acción"
+            }
+
+
+
+    def get_base_exception(self, error, error_label="Unknown error while querying: "):
+        return {
+            "error": "Unknown error while querying: " + error.response['Error']['Message']
+        }
+
+
+    def get_client_error(self, error):
+        return {
+            "error": self.handle_error(error)
+        }
+
+
+    def get_response_success(self, response, msg_success="Query successful."):
+        print(response)
+        return {
+            "msg": msg_success,
+            "response": response
+        }
 
 
     def show_item(self):
@@ -60,25 +170,6 @@ class Model:
         print(f"""self.main_table: {self.main_table}""")
         print(f"""self.obj.brand: {self.obj['Brand']}""")
         print("=====================================")
-
-
-    def execute_put_item(self):
-        try:
-            print(self.obj)
-            response = self.main_table.put_item(Item=self.obj)
-            return {
-                "response": response,
-                "item": self.obj,
-                "msg": f"""Registro {self.obj['Name']} creado satisfactoriamente"""
-            }
-        except ClientError as error:
-            return {
-                "error": self.handle_error(error)
-            }
-        except BaseException as error:
-            return {
-                "error": "Error desconocido al crear el item: " + error.response['Error']['Message']
-            }
 
 
     def handle_error(self, error):

@@ -8,23 +8,48 @@ import json
 import jwt
 import os
 import uuid
+from product import Product
+from functions import response_function
 
 
 def lambda_handler(event, context):
-    dynamodb = boto3.resource('dynamodb', region_name="us-east-1")
+    dynamo_table_name = os.environ.get('MAIN_TABLE_BABYGIFT')
+    stage = os.environ.get('AWS_ENV')
+    products = Product(dynamo_table_name, stage)
 
-    product_table = dynamodb.Table(os.environ['PRODUCTS_TABLE'])
+    response = products.all()
 
-    response = product_table.scan()
+    products_json = process_data_products(response)
+    response['response']['Items'] = products_json
 
-    headers = {
-        "Content-Type": "application/json"
-    }
+    return response_function(response, True)
 
-    return {
-        "headers": headers,
-        "statusCode": 200,
-        'body': json.dumps(
-            response
-        )
-    }
+
+def process_data_products(data):
+    list_products = data['response']['Items']
+    products = []
+    for product in list_products:
+        discount_price = get_discount_price(product['Price'], product['Discount'])
+        product_json = {
+            'id': product['PK'].split('#')[1],
+            'name': product['Name'],
+            'brand': product['Brand'],
+            'description': product['Description'],
+            'finalPrice': float(product['Price']),
+            'discountPrice': discount_price,
+            'image': '',
+            'rating': 3
+        }
+
+        products.append(product_json)
+
+    return products
+
+
+def get_discount_price(price, discount_obj):
+    print(discount_obj['Percentage'])
+    if 'Percentage' in discount_obj:
+        discount = float(price) * float(discount_obj['Percentage']) / 100
+        return float(price) - discount
+    elif 'Price' in discount_obj:
+        return price - discount_obj['Price']
